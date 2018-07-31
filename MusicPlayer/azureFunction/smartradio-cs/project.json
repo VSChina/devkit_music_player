@@ -1,0 +1,10 @@
+﻿{
+  "frameworks": {
+    "net46": {
+      "dependencies": {
+        "Microsoft.Azure.Devices": "1.16.0",
+        "Microsoft.Azure.Devices.Shared": "1.15.0"
+      }
+    }
+  }
+}

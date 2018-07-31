@@ -1,0 +1,33 @@
+{
+    "files.associations": {
+        "xlocale": "cpp",
+        "future": "cpp",
+        "system_error": "cpp",
+        "iosfwd": "cpp",
+        "thread": "cpp",
+        "xlocnum": "cpp",
+        "xstring": "cpp",
+        "allocators": "cpp",
+        "array": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xmemory0": "cpp",
+        "xtree": "cpp",
+        "ios": "cpp",
+        "xutility": "cpp",
+        "sstream": "cpp",
+        "ostream": "cpp",
+        "utility": "cpp",
+        "algorithm": "cpp",
+        "chrono": "cpp",
+        "limits": "cpp",
+        "initializer_list": "cpp",
+        "istream": "cpp",
+        "memory": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "xmemory": "cpp"
+    }
+}
