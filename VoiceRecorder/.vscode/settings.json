@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "xutility": "cpp",
+        "array": "cpp",
+        "forward_list": "cpp",
+        "initializer_list": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "xhash": "cpp",
+        "xstring": "cpp",
+        "xtree": "cpp",
+        "xlocale": "cpp",
+        "ostream": "cpp",
+        "memory": "cpp",
+        "mutex": "cpp"
+    }
+}

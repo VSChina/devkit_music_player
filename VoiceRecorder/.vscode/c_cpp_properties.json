@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "C:\\Users\\clovett\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.3.2\\cores\\arduino",
+                "C:\\Users\\clovett\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.3.2\\libraries\\AudioV2\\src"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "C:\\Users\\clovett\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.3.2\\cores\\arduino",
+                    "C:\\Users\\clovett\\AppData\\Local\\Arduino15\\packages\\AZ3166\\hardware\\stm32f4\\1.3.2\\libraries\\AudioV2\\src"
+                ]
+            },
+            "intelliSenseMode": "msvc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
