@@ -396,7 +396,6 @@ void process_audio(float* featurizer_input_buffer)
         last_prediction = argmax;
         Serial1.write(getPredictWordId(argmax));
         Serial1.write((unsigned char)0);
-
       } else if (last_confidence > 0) {
         // provides a way to track best prediction for a little window in time.
         last_confidence -= 0.01;

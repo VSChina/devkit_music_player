@@ -68,76 +68,75 @@ mfcc_Filter:
 	add	r3, pc
 .LBB0_1:                                @ %loop.body.i9
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r7, r1, r0, lsl #2
-	add.w	r6, r2, r0, lsl #2
+	adds	r7, r1, r0
+	adds	r6, r2, r0
 	vldr	s2, [r7]
 	vldr	s0, [r6]
-	add.w	r7, r3, r0, lsl #2
-	adds	r0, #1
-	cmp.w	r0, #256
+	adds	r7, r3, r0
+	adds	r0, #4
+	cmp.w	r0, #1024
 	vmul.f32	s0, s2, s0
 	vstr	s0, [r7]
-	blt	.LBB0_1
+	bne	.LBB0_1
 @ BB#2:                                 @ %_Node__BinaryOperationNode_float__in_256_256_out_256_Node_1109.exit
 	ldr	r1, .LCPI0_6
-	movs	r0, #0
 	add.w	r5, sp, #1024
-	movs	r2, #0
+	movs	r0, #0
+	movs	r3, #0
+	orr	r7, r5, #4
+	mov	r2, r7
 .LPC0_6:
 	add	r1, pc
 .LBB0_3:                                @ %loop.body.i6
                                         @ =>This Inner Loop Header: Depth=1
-	ldr.w	r3, [r1, r2, lsl #2]
-	str.w	r3, [r5, r2, lsl #3]
-	add.w	r3, r5, r2, lsl #3
-	adds	r2, #1
-	str	r0, [r3, #4]
-	cmp.w	r2, #256
-	blt	.LBB0_3
+	ldr.w	r6, [r1, r3, lsl #2]
+	adds	r3, #1
+	cmp.w	r3, #256
+	strd	r6, r0, [r2, #-4]
+	add.w	r2, r2, #8
+	bne	.LBB0_3
 @ BB#4:                                 @ %loop.body.i.preheader.i
-	movs	r1, #0
 	mov	r0, sp
 	movs	r2, #0
+	movs	r3, #12
+	orr	r12, r0, #4
 .LBB0_5:                                @ %loop.body.i.i
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r3, r5, r1, lsl #3
-	adds	r1, #2
-	add.w	r7, r3, #8
-	vldr	s0, [r3, #8]
-	vldr	s2, [r7, #4]
-	add.w	r7, r0, r2, lsl #3
-	vstr	s0, [r7]
-	vldr	s0, [r3]
-	vstr	s2, [r7, #4]
-	vldr	s2, [r3, #4]
-	add.w	r3, r5, r2, lsl #3
-	adds	r2, #1
-	cmp	r2, #128
-	vstr	s0, [r3]
-	vstr	s2, [r3, #4]
-	blt	.LBB0_5
+	add.w	r4, r5, r2, lsl #1
+	ldr	r6, [r5, r3]
+	ldr	r1, [r4, #8]
+	str	r1, [r0, r2]
+	str.w	r6, [r12, r2]
+	adds	r6, r5, r3
+	ldr	r1, [r4, #4]
+	adds	r3, #16
+	ldr	r6, [r6, #-12]
+	str	r6, [r5, r2]
+	adds	r6, r5, r2
+	adds	r2, #8
+	str	r1, [r6, #4]
+	cmp.w	r2, #1024
+	bne	.LBB0_5
 @ BB#6:                                 @ %loop.body3.i.i.preheader
 	movs	r1, #0
 .LBB0_7:                                @ %loop.body3.i.i
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r3, r0, r1, lsl #3
-	add.w	r2, r5, r1, lsl #3
-	adds	r1, #1
-	vldr	s0, [r3]
-	vldr	s2, [r3, #4]
-	add.w	r2, r2, #1024
-	cmp	r1, #128
-	vstr	s0, [r2]
-	vstr	s2, [r2, #4]
-	blt	.LBB0_7
+	adds	r2, r0, r1
+	ldr	r3, [r0, r1]
+	adds	r6, r5, r1
+	adds	r1, #8
+	ldr	r2, [r2, #4]
+	cmp.w	r1, #1024
+	str.w	r3, [r6, #1024]
+	str.w	r2, [r6, #1028]
+	bne	.LBB0_7
 @ BB#8:                                 @ %loop.after5.i.i
-	mov	r7, sp
+	mov	r6, sp
 	mov	r0, r5
-	mov	r1, r7
+	mov	r1, r6
 	bl	FFTC_float_128
-	add.w	r6, r5, #1024
-	mov	r1, r7
-	mov	r0, r6
+	add.w	r0, r5, #1024
+	mov	r1, r6
 	bl	FFTC_float_128
 	ldr	r1, .LCPI0_7
 	movs	r0, #0
@@ -145,30 +144,31 @@ mfcc_Filter:
 	add	r1, pc
 .LBB0_9:                                @ %loop.body8.i.i
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r2, r1, r0, lsl #3
-	add.w	r3, r6, r0, lsl #3
-	vldr	s0, [r3]
-	vldr	s4, [r2]
-	vldr	s6, [r2, #4]
-	add.w	r2, r5, r0, lsl #3
-	vldr	s2, [r3, #4]
-	adds	r0, #1
+	adds	r2, r5, r0
+	adds	r6, r1, r0
+	adds	r0, #8
+	add.w	r4, r2, #1024
+	addw	r3, r2, #1028
+	vldr	s2, [r6]
+	vldr	s4, [r6, #4]
 	vldr	s8, [r2]
 	vldr	s10, [r2, #4]
-	cmp	r0, #128
-	vmul.f32	s12, s4, s0
-	vmul.f32	s4, s4, s2
-	vmls.f32	s12, s6, s2
-	vmla.f32	s4, s6, s0
+	cmp.w	r0, #1024
+	vldr	s0, [r4]
+	vldr	s6, [r3]
+	vmul.f32	s12, s2, s0
+	vmul.f32	s2, s2, s6
+	vmls.f32	s12, s4, s6
+	vmla.f32	s2, s4, s0
 	vadd.f32	s0, s8, s12
-	vadd.f32	s2, s10, s4
+	vadd.f32	s4, s10, s2
 	vsub.f32	s6, s8, s12
 	vstr	s0, [r2]
-	vsub.f32	s0, s10, s4
-	vstr	s2, [r2, #4]
-	vstr	s6, [r3]
-	vstr	s0, [r3, #4]
-	blt	.LBB0_9
+	vsub.f32	s0, s10, s2
+	vstr	s4, [r2, #4]
+	vstr	s6, [r4]
+	vstr	s0, [r3]
+	bne	.LBB0_9
 @ BB#10:                                @ %loop.body3.i7.preheader
 	ldr	r1, .LCPI0_8
 	movs	r0, #0
@@ -176,102 +176,100 @@ mfcc_Filter:
 	add	r1, pc
 .LBB0_11:                               @ %loop.body3.i7
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r2, r5, r0, lsl #3
-	vldr	s2, [r2, #4]
-	vldr	s0, [r2]
-	add.w	r2, r1, r0, lsl #2
-	adds	r0, #1
-	cmp	r0, #128
+	vldr	s2, [r7]
+	vldr	s0, [r7, #-4]
+	adds	r2, r1, r0
+	adds	r0, #4
+	adds	r7, #8
+	cmp.w	r0, #512
 	vmul.f32	s2, s2, s2
 	vmla.f32	s2, s0, s0
 	vsqrt.f32	s0, s2
 	vstr	s0, [r2]
-	blt	.LBB0_11
+	bne	.LBB0_11
 @ BB#12:                                @ %_Node__FFTNode_float__in_256_out_128.exit
-	ldr.w	r12, .LCPI0_9
-	ldr.w	lr, .LCPI0_11
-	ldr.w	r9, .LCPI0_12
-	ldr	r7, .LCPI0_13
-	ldr	r6, .LCPI0_14
-	ldr.w	r10, .LCPI0_15
+	ldr.w	r9, .LCPI0_9
+	ldr.w	r10, .LCPI0_11
+	ldr	r3, .LCPI0_12
+	ldr.w	r12, .LCPI0_13
+	ldr.w	lr, .LCPI0_14
+	ldr	r5, .LCPI0_15
 	vldr	s0, .LCPI0_10
 	movs	r0, #0
 	vmov.f32	s2, #5.000000e-01
 	vmov.f32	s4, #-5.000000e-01
 .LPC0_9:
-	add	r12, pc
-.LPC0_10:
-	add	lr, pc
-.LPC0_11:
 	add	r9, pc
-.LPC0_12:
-	add	r7, pc
-.LPC0_13:
-	add	r6, pc
-.LPC0_14:
+.LPC0_10:
 	add	r10, pc
+.LPC0_11:
+	add	r3, pc
+.LPC0_12:
+	add	r12, pc
+.LPC0_13:
+	add	lr, pc
+.LPC0_14:
+	add	r5, pc
 .LBB0_13:                               @ %loop.body.i5
                                         @ =>This Loop Header: Depth=1
                                         @     Child Loop BB0_15 Depth 2
                                         @     Child Loop BB0_18 Depth 2
-	ldr.w	r4, [r12, r0, lsl #2]
-	ldr.w	r1, [lr, r0, lsl #2]
-	ldr.w	r2, [r9, r0, lsl #2]
+	ldr.w	r7, [r9, r0, lsl #2]
+	ldr.w	r4, [r10, r0, lsl #2]
+	ldr.w	r1, [r3, r0, lsl #2]
 	vmov.f32	s6, s0
-	cmp	r1, r2
+	cmp	r4, r1
 	ble	.LBB0_16
 @ BB#14:                                @ %loop.body3.lr.ph.i
                                         @   in Loop: Header=BB0_13 Depth=1
-	subs	r5, r1, r2
-	movs	r3, #0
-	vmov	s6, r5
+	subs	r6, r4, r1
+	add.w	r1, r12, r1, lsl #2
+	movs	r2, #0
+	vmov	s6, r6
 	vcvt.f32.s32	s8, s6
 	vmov.f32	s6, s0
 .LBB0_15:                               @ %loop.body3.i
                                         @   Parent Loop BB0_13 Depth=1
                                         @ =>  This Inner Loop Header: Depth=2
-	adds	r5, r2, r3
-	vmov	s10, r3
-	adds	r3, #1
-	add.w	r5, r7, r5, lsl #2
+	vmov	s10, r2
+	adds	r2, #1
 	vcvt.f32.s32	s10, s10
-	vldr	s12, [r5]
+	vldr	s12, [r1]
+	adds	r1, #4
+	cmp	r6, r2
 	vadd.f32	s10, s10, s2
-	adds	r5, r2, r3
 	vdiv.f32	s10, s10, s8
-	cmp	r5, r1
 	vmla.f32	s6, s12, s10
-	blt	.LBB0_15
+	bne	.LBB0_15
 .LBB0_16:                               @ %loop.cond7.preheader.i
                                         @   in Loop: Header=BB0_13 Depth=1
-	cmp	r4, r1
+	cmp	r7, r4
 	ble	.LBB0_19
 @ BB#17:                                @ %loop.body8.lr.ph.i
                                         @   in Loop: Header=BB0_13 Depth=1
-	subs	r2, r4, r1
-	vmov	s8, r2
+	subs	r6, r7, r4
+	add.w	r1, lr, r4, lsl #2
+	vmov	s8, r6
 	vcvt.f32.s32	s8, s8
 .LBB0_18:                               @ %loop.body8.i
                                         @   Parent Loop BB0_13 Depth=1
                                         @ =>  This Inner Loop Header: Depth=2
-	vmov	s10, r2
-	add.w	r3, r6, r1, lsl #2
-	adds	r1, #1
-	subs	r2, #1
+	vmov	s10, r6
+	subs	r6, #1
 	vcvt.f32.s32	s10, s10
-	vldr	s12, [r3]
-	cmp	r4, r1
+	vldr	s12, [r1]
+	add.w	r1, r1, #4
 	vadd.f32	s10, s10, s4
 	vdiv.f32	s10, s10, s8
 	vmla.f32	s6, s12, s10
-	bgt	.LBB0_18
+	bne	.LBB0_18
 .LBB0_19:                               @ %loop.after10.i
                                         @   in Loop: Header=BB0_13 Depth=1
-	add.w	r1, r10, r0, lsl #2
+	add.w	r1, r5, r0, lsl #2
 	adds	r0, #1
 	vstr	s6, [r1]
 	cmp	r0, #40
-	blt	.LBB0_13
+	bne	.LBB0_13
 @ BB#20:                                @ %loop.body.i4.preheader
 	ldr	r1, .LCPI0_16
 	ldr	r2, .LCPI0_17
@@ -285,16 +283,16 @@ mfcc_Filter:
 	add	r3, pc
 .LBB0_21:                               @ %loop.body.i4
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r7, r1, r0, lsl #2
-	add.w	r6, r2, r0, lsl #2
+	adds	r7, r1, r0
+	adds	r6, r2, r0
 	vldr	s2, [r7]
 	vldr	s0, [r6]
-	add.w	r7, r3, r0, lsl #2
-	adds	r0, #1
-	cmp	r0, #40
+	adds	r7, r3, r0
+	adds	r0, #4
+	cmp	r0, #160
 	vadd.f32	s0, s2, s0
 	vstr	s0, [r7]
-	blt	.LBB0_21
+	bne	.LBB0_21
 @ BB#22:                                @ %loop.body.i.preheader
 	ldr	r5, .LCPI0_19
 	ldr	r6, .LCPI0_20
@@ -305,12 +303,12 @@ mfcc_Filter:
 	add	r6, pc
 .LBB0_23:                               @ %loop.body.i
                                         @ =>This Inner Loop Header: Depth=1
-	ldr.w	r0, [r5, r4, lsl #2]
+	ldr	r0, [r5, r4]
 	bl	logf
-	str.w	r0, [r6, r4, lsl #2]
-	adds	r4, #1
-	cmp	r4, #40
-	blt	.LBB0_23
+	str	r0, [r6, r4]
+	adds	r4, #4
+	cmp	r4, #160
+	bne	.LBB0_23
 @ BB#24:                                @ %_Node__UnaryOperationNode_float__in_40_out_40_Node_1114.exit
 	cmp.w	r8, #0
 	itt	eq
@@ -382,91 +380,91 @@ mfcc_Filter:
 FFTC_float_128:
 	.fnstart
 @ BB#0:                                 @ %entry
-	.save	{r4, r5, r6, lr}
-	push	{r4, r5, r6, lr}
-	mov	r5, r1
+	.save	{r4, r5, r6, r7, lr}
+	push	{r4, r5, r6, r7, lr}
+	.pad	#4
+	sub	sp, #4
+	mov	r7, r1
 	mov	r4, r0
-	movs	r0, #0
+	movs	r0, #4
 	movs	r1, #0
 .LBB1_1:                                @ %loop.body
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r2, r4, r0, lsl #3
-	mov	r3, r2
-	ldr	r6, [r3, #8]!
-	ldr	r3, [r3, #4]
-	str.w	r6, [r5, r1, lsl #3]
-	add.w	r6, r5, r1, lsl #3
-	str	r3, [r6, #4]
-	ldr.w	r3, [r4, r0, lsl #3]
+	adds	r2, r4, r1
+	ldr.w	r5, [r4, r0, lsl #1]
+	adds	r6, r7, r0
+	ldr	r3, [r2, #12]
+	str	r5, [r6, #-4]
+	adds	r6, r4, r0
+	str	r3, [r7, r0]
+	ldr	r3, [r4, r1]
 	ldr	r2, [r2, #4]
-	adds	r0, #2
-	str.w	r3, [r4, r1, lsl #3]
-	add.w	r3, r4, r1, lsl #3
-	adds	r1, #1
-	str	r2, [r3, #4]
-	cmp	r1, #64
-	blt	.LBB1_1
+	adds	r1, #16
+	cmp.w	r1, #1024
+	str	r3, [r6, #-4]
+	str	r2, [r4, r0]
+	add.w	r0, r0, #8
+	bne	.LBB1_1
 @ BB#2:                                 @ %loop.body3.preheader
 	movs	r0, #0
 .LBB1_3:                                @ %loop.body3
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r1, r5, r0, lsl #3
-	ldr.w	r2, [r5, r0, lsl #3]
-	add.w	r3, r4, r0, lsl #3
-	adds	r0, #1
+	adds	r1, r7, r0
+	ldr	r2, [r7, r0]
+	adds	r3, r4, r0
+	adds	r0, #8
 	ldr	r1, [r1, #4]
-	cmp	r0, #64
+	cmp.w	r0, #512
 	str.w	r2, [r3, #512]
 	str.w	r1, [r3, #516]
-	blt	.LBB1_3
+	bne	.LBB1_3
 @ BB#4:                                 @ %loop.after5
 	mov	r0, r4
-	mov	r1, r5
+	mov	r1, r7
 	bl	FFTC_float_64
-	add.w	r6, r4, #512
-	mov	r1, r5
-	mov	r0, r6
+	add.w	r0, r4, #512
+	mov	r1, r7
 	bl	FFTC_float_64
-	ldr.w	r12, .LCPI1_0
-	movs	r0, #0
+	ldr	r1, .LCPI1_0
+	movs	r0, #4
 .LPC1_0:
-	add	r12, pc
+	add	r1, pc
 .LBB1_5:                                @ %loop.body8
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r3, r12, r0, lsl #3
-	ldr.w	r2, [r6, r0, lsl #3]
-	ldr.w	r1, [r4, r0, lsl #3]
-	vldr	s0, [r3]
-	vldr	s2, [r3, #4]
-	add.w	r3, r6, r0, lsl #3
-	ldr	r5, [r3, #4]
-	vmov	s4, r2
-	add.w	r2, r4, r0, lsl #3
-	vmov	s10, r1
+	adds	r2, r4, r0
+	adds	r6, r1, r0
+	ldr.w	r7, [r2, #508]
+	ldr.w	r3, [r2, #512]
+	vldr	s0, [r6, #-4]
+	vldr	s2, [r6]
+	vmov	s4, r7
+	ldr	r7, [r2, #-4]
+	vmov	s6, r3
+	ldr	r3, [r4, r0]
 	vmul.f32	s8, s0, s4
-	vmov	s6, r5
-	ldr	r5, [r2, #4]
 	vmul.f32	s0, s0, s6
 	vmls.f32	s8, s2, s6
 	vmla.f32	s0, s2, s4
-	vmov	s12, r5
+	vmov	s10, r7
+	vmov	s12, r3
 	vadd.f32	s6, s10, s8
-	vmov	r1, s6
 	vadd.f32	s2, s12, s0
 	vsub.f32	s0, s12, s0
-	str.w	r1, [r4, r0, lsl #3]
-	vmov	r1, s2
+	vmov	r3, s6
+	str	r3, [r2, #-4]
+	vmov	r3, s2
 	vsub.f32	s2, s10, s8
-	str	r1, [r2, #4]
-	vmov	r1, s2
-	str.w	r1, [r6, r0, lsl #3]
-	adds	r0, #1
-	vmov	r1, s0
-	str	r1, [r3, #4]
-	cmp	r0, #64
-	blt	.LBB1_5
+	str	r3, [r4, r0]
+	vmov	r3, s2
+	adds	r0, #8
+	str.w	r3, [r2, #508]
+	vmov	r3, s0
+	cmp.w	r0, #516
+	str.w	r3, [r2, #512]
+	bne	.LBB1_5
 @ BB#6:                                 @ %loop.after10
-	pop	{r4, r5, r6, pc}
+	add	sp, #4
+	pop	{r4, r5, r6, r7, pc}
 	.p2align	2
 @ BB#7:
 .LCPI1_0:
@@ -483,91 +481,91 @@ FFTC_float_128:
 FFTC_float_64:
 	.fnstart
 @ BB#0:                                 @ %entry
-	.save	{r4, r5, r6, lr}
-	push	{r4, r5, r6, lr}
-	mov	r5, r1
+	.save	{r4, r5, r6, r7, lr}
+	push	{r4, r5, r6, r7, lr}
+	.pad	#4
+	sub	sp, #4
+	mov	r7, r1
 	mov	r4, r0
-	movs	r0, #0
+	movs	r0, #4
 	movs	r1, #0
 .LBB2_1:                                @ %loop.body
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r2, r4, r0, lsl #3
-	mov	r3, r2
-	ldr	r6, [r3, #8]!
-	ldr	r3, [r3, #4]
-	str.w	r6, [r5, r1, lsl #3]
-	add.w	r6, r5, r1, lsl #3
-	str	r3, [r6, #4]
-	ldr.w	r3, [r4, r0, lsl #3]
+	adds	r2, r4, r1
+	ldr.w	r5, [r4, r0, lsl #1]
+	adds	r6, r7, r0
+	ldr	r3, [r2, #12]
+	str	r5, [r6, #-4]
+	adds	r6, r4, r0
+	str	r3, [r7, r0]
+	ldr	r3, [r4, r1]
 	ldr	r2, [r2, #4]
-	adds	r0, #2
-	str.w	r3, [r4, r1, lsl #3]
-	add.w	r3, r4, r1, lsl #3
-	adds	r1, #1
-	str	r2, [r3, #4]
-	cmp	r1, #32
-	blt	.LBB2_1
+	adds	r1, #16
+	cmp.w	r1, #512
+	str	r3, [r6, #-4]
+	str	r2, [r4, r0]
+	add.w	r0, r0, #8
+	bne	.LBB2_1
 @ BB#2:                                 @ %loop.body3.preheader
 	movs	r0, #0
 .LBB2_3:                                @ %loop.body3
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r1, r5, r0, lsl #3
-	ldr.w	r2, [r5, r0, lsl #3]
-	add.w	r3, r4, r0, lsl #3
-	adds	r0, #1
+	adds	r1, r7, r0
+	ldr	r2, [r7, r0]
+	adds	r3, r4, r0
+	adds	r0, #8
 	ldr	r1, [r1, #4]
-	cmp	r0, #32
+	cmp.w	r0, #256
 	str.w	r2, [r3, #256]
 	str.w	r1, [r3, #260]
-	blt	.LBB2_3
+	bne	.LBB2_3
 @ BB#4:                                 @ %loop.after5
 	mov	r0, r4
-	mov	r1, r5
+	mov	r1, r7
 	bl	FFTC_float_32
-	add.w	r6, r4, #256
-	mov	r1, r5
-	mov	r0, r6
+	add.w	r0, r4, #256
+	mov	r1, r7
 	bl	FFTC_float_32
-	ldr.w	r12, .LCPI2_0
-	movs	r0, #0
+	ldr	r1, .LCPI2_0
+	movs	r0, #4
 .LPC2_0:
-	add	r12, pc
+	add	r1, pc
 .LBB2_5:                                @ %loop.body8
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r3, r12, r0, lsl #3
-	ldr.w	r2, [r6, r0, lsl #3]
-	ldr.w	r1, [r4, r0, lsl #3]
-	vldr	s0, [r3]
-	vldr	s2, [r3, #4]
-	add.w	r3, r6, r0, lsl #3
-	ldr	r5, [r3, #4]
-	vmov	s4, r2
-	add.w	r2, r4, r0, lsl #3
-	vmov	s10, r1
+	adds	r2, r4, r0
+	adds	r6, r1, r0
+	ldr.w	r7, [r2, #252]
+	ldr.w	r3, [r2, #256]
+	vldr	s0, [r6, #-4]
+	vldr	s2, [r6]
+	vmov	s4, r7
+	ldr	r7, [r2, #-4]
+	vmov	s6, r3
+	ldr	r3, [r4, r0]
 	vmul.f32	s8, s0, s4
-	vmov	s6, r5
-	ldr	r5, [r2, #4]
 	vmul.f32	s0, s0, s6
 	vmls.f32	s8, s2, s6
 	vmla.f32	s0, s2, s4
-	vmov	s12, r5
+	vmov	s10, r7
+	vmov	s12, r3
 	vadd.f32	s6, s10, s8
-	vmov	r1, s6
 	vadd.f32	s2, s12, s0
 	vsub.f32	s0, s12, s0
-	str.w	r1, [r4, r0, lsl #3]
-	vmov	r1, s2
+	vmov	r3, s6
+	str	r3, [r2, #-4]
+	vmov	r3, s2
 	vsub.f32	s2, s10, s8
-	str	r1, [r2, #4]
-	vmov	r1, s2
-	str.w	r1, [r6, r0, lsl #3]
-	adds	r0, #1
-	vmov	r1, s0
-	str	r1, [r3, #4]
-	cmp	r0, #32
-	blt	.LBB2_5
+	str	r3, [r4, r0]
+	vmov	r3, s2
+	adds	r0, #8
+	str.w	r3, [r2, #252]
+	vmov	r3, s0
+	cmp.w	r0, #260
+	str.w	r3, [r2, #256]
+	bne	.LBB2_5
 @ BB#6:                                 @ %loop.after10
-	pop	{r4, r5, r6, pc}
+	add	sp, #4
+	pop	{r4, r5, r6, r7, pc}
 	.p2align	2
 @ BB#7:
 .LCPI2_0:
@@ -584,93 +582,145 @@ FFTC_float_64:
 FFTC_float_32:
 	.fnstart
 @ BB#0:                                 @ %entry
-	.save	{r4, r5, r6, lr}
-	push	{r4, r5, r6, lr}
-	mov	r5, r1
+	.save	{r4, r5, r6, r7, lr}
+	push	{r4, r5, r6, r7, lr}
+	.pad	#4
+	sub	sp, #4
+	mov	r7, r1
 	mov	r4, r0
-	movs	r0, #0
+	movs	r0, #4
 	movs	r1, #0
 .LBB3_1:                                @ %loop.body
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r2, r4, r0, lsl #3
-	mov	r3, r2
-	ldr	r6, [r3, #8]!
-	ldr	r3, [r3, #4]
-	str.w	r6, [r5, r1, lsl #3]
-	add.w	r6, r5, r1, lsl #3
-	str	r3, [r6, #4]
-	ldr.w	r3, [r4, r0, lsl #3]
+	adds	r2, r4, r1
+	ldr.w	r6, [r4, r0, lsl #1]
+	adds	r5, r7, r0
+	ldr	r3, [r2, #12]
+	str	r6, [r5, #-4]
+	adds	r6, r4, r0
+	str	r3, [r7, r0]
+	ldr	r3, [r4, r1]
 	ldr	r2, [r2, #4]
-	adds	r0, #2
-	str.w	r3, [r4, r1, lsl #3]
-	add.w	r3, r4, r1, lsl #3
-	adds	r1, #1
-	str	r2, [r3, #4]
-	cmp	r1, #16
-	blt	.LBB3_1
+	adds	r1, #16
+	cmp.w	r1, #256
+	str	r3, [r6, #-4]
+	str	r2, [r4, r0]
+	add.w	r0, r0, #8
+	bne	.LBB3_1
 @ BB#2:                                 @ %loop.body3.preheader
-	movs	r0, #0
-.LBB3_3:                                @ %loop.body3
-                                        @ =>This Inner Loop Header: Depth=1
-	add.w	r1, r5, r0, lsl #3
-	ldr.w	r2, [r5, r0, lsl #3]
-	add.w	r3, r4, r0, lsl #3
-	adds	r0, #1
-	ldr	r1, [r1, #4]
-	cmp	r0, #16
-	str	r2, [r3, #128]!
-	str	r1, [r3, #4]
-	blt	.LBB3_3
-@ BB#4:                                 @ %loop.after5
+	ldr	r0, [r7]
+	ldr	r1, [r7, #4]
+	mov	r6, r4
+	str	r0, [r6, #128]!
+	str.w	r1, [r4, #132]
+	ldr	r0, [r7, #8]
+	ldr	r1, [r7, #12]
+	str.w	r0, [r4, #136]
+	str.w	r1, [r4, #140]
+	ldr	r0, [r7, #16]
+	ldr	r1, [r7, #20]
+	str.w	r0, [r4, #144]
+	str.w	r1, [r4, #148]
+	ldr	r0, [r7, #24]
+	ldr	r1, [r7, #28]
+	str.w	r0, [r4, #152]
+	str.w	r1, [r4, #156]
+	ldr	r0, [r7, #32]
+	ldr	r1, [r7, #36]
+	str.w	r0, [r4, #160]
+	str.w	r1, [r4, #164]
+	ldr	r0, [r7, #40]
+	ldr	r1, [r7, #44]
+	str.w	r0, [r4, #168]
+	str.w	r1, [r4, #172]
+	ldr	r0, [r7, #48]
+	ldr	r1, [r7, #52]
+	str.w	r0, [r4, #176]
+	str.w	r1, [r4, #180]
+	ldr	r0, [r7, #56]
+	ldr	r1, [r7, #60]
+	str.w	r0, [r4, #184]
+	str.w	r1, [r4, #188]
+	ldr	r0, [r7, #64]
+	ldr	r1, [r7, #68]
+	str.w	r0, [r4, #192]
+	str.w	r1, [r4, #196]
+	ldr	r0, [r7, #72]
+	ldr	r1, [r7, #76]
+	str.w	r0, [r4, #200]
+	str.w	r1, [r4, #204]
+	ldr	r0, [r7, #80]
+	ldr	r1, [r7, #84]
+	str.w	r0, [r4, #208]
+	str.w	r1, [r4, #212]
+	ldr	r0, [r7, #88]
+	ldr	r1, [r7, #92]
+	str.w	r0, [r4, #216]
+	str.w	r1, [r4, #220]
+	ldr	r0, [r7, #96]
+	ldr	r1, [r7, #100]
+	str.w	r0, [r4, #224]
+	str.w	r1, [r4, #228]
+	ldr	r0, [r7, #104]
+	ldr	r1, [r7, #108]
+	str.w	r0, [r4, #232]
+	str.w	r1, [r4, #236]
+	ldr	r0, [r7, #112]
+	ldr	r1, [r7, #116]
+	str.w	r0, [r4, #240]
+	str.w	r1, [r4, #244]
+	ldr	r0, [r7, #120]
+	ldr	r1, [r7, #124]
+	str.w	r0, [r4, #248]
+	str.w	r1, [r4, #252]
 	mov	r0, r4
-	mov	r1, r5
+	mov	r1, r7
 	bl	FFTC_float_16
-	add.w	r6, r4, #128
-	mov	r1, r5
 	mov	r0, r6
+	mov	r1, r7
 	bl	FFTC_float_16
-	ldr.w	r12, .LCPI3_0
-	movs	r0, #0
+	ldr	r1, .LCPI3_0
+	movs	r0, #4
 .LPC3_0:
-	add	r12, pc
-.LBB3_5:                                @ %loop.body8
+	add	r1, pc
+.LBB3_3:                                @ %loop.body8
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r3, r12, r0, lsl #3
-	ldr.w	r2, [r6, r0, lsl #3]
-	ldr.w	r1, [r4, r0, lsl #3]
-	vldr	s0, [r3]
-	vldr	s2, [r3, #4]
-	add.w	r3, r6, r0, lsl #3
-	ldr	r5, [r3, #4]
-	vmov	s4, r2
-	add.w	r2, r4, r0, lsl #3
-	vmov	s10, r1
+	adds	r2, r4, r0
+	adds	r6, r1, r0
+	ldr	r7, [r2, #124]
+	ldr.w	r3, [r2, #128]
+	vldr	s0, [r6, #-4]
+	vldr	s2, [r6]
+	vmov	s4, r7
+	ldr	r7, [r2, #-4]
+	vmov	s6, r3
+	ldr	r3, [r4, r0]
 	vmul.f32	s8, s0, s4
-	vmov	s6, r5
-	ldr	r5, [r2, #4]
 	vmul.f32	s0, s0, s6
 	vmls.f32	s8, s2, s6
 	vmla.f32	s0, s2, s4
-	vmov	s12, r5
+	vmov	s10, r7
+	vmov	s12, r3
 	vadd.f32	s6, s10, s8
-	vmov	r1, s6
 	vadd.f32	s2, s12, s0
 	vsub.f32	s0, s12, s0
-	str.w	r1, [r4, r0, lsl #3]
-	vmov	r1, s2
+	vmov	r3, s6
+	str	r3, [r2, #-4]
+	vmov	r3, s2
 	vsub.f32	s2, s10, s8
-	str	r1, [r2, #4]
-	vmov	r1, s2
-	str.w	r1, [r6, r0, lsl #3]
-	adds	r0, #1
-	vmov	r1, s0
-	str	r1, [r3, #4]
-	cmp	r0, #16
-	blt	.LBB3_5
-@ BB#6:                                 @ %loop.after10
-	pop	{r4, r5, r6, pc}
+	str	r3, [r4, r0]
+	vmov	r3, s2
+	adds	r0, #8
+	str	r3, [r2, #124]
+	vmov	r3, s0
+	cmp	r0, #132
+	str.w	r3, [r2, #128]
+	bne	.LBB3_3
+@ BB#4:                                 @ %loop.after10
+	add	sp, #4
+	pop	{r4, r5, r6, r7, pc}
 	.p2align	2
-@ BB#7:
+@ BB#5:
 .LCPI3_0:
 	.long	twiddles_16-(.LPC3_0+4)
 .Lfunc_end3:
@@ -688,144 +738,143 @@ FFTC_float_16:
 	.save	{r4, r5, r6, lr}
 	push	{r4, r5, r6, lr}
 	mov	r4, r0
-	mov	r6, r1
+	mov	r5, r1
 	ldr	r0, [r4, #8]
 	ldr	r1, [r4, #12]
-	mov	r5, r4
-	str	r0, [r6]
-	str	r1, [r6, #4]
+	mov	r6, r4
+	str	r0, [r5]
+	str	r1, [r5, #4]
 	ldr	r0, [r4, #24]
 	ldr	r1, [r4, #28]
-	str	r0, [r6, #8]
-	str	r1, [r6, #12]
+	str	r0, [r5, #8]
+	str	r1, [r5, #12]
 	ldr	r0, [r4, #16]
 	ldr	r1, [r4, #20]
 	str	r0, [r4, #8]
 	str	r1, [r4, #12]
 	ldr	r0, [r4, #40]
 	ldr	r1, [r4, #44]
-	str	r0, [r6, #16]
-	str	r1, [r6, #20]
+	str	r0, [r5, #16]
+	str	r1, [r5, #20]
 	ldr	r0, [r4, #32]
 	ldr	r1, [r4, #36]
 	str	r0, [r4, #16]
 	str	r1, [r4, #20]
 	ldr	r0, [r4, #56]
 	ldr	r1, [r4, #60]
-	str	r0, [r6, #24]
-	str	r1, [r6, #28]
+	str	r0, [r5, #24]
+	str	r1, [r5, #28]
 	ldr	r0, [r4, #48]
 	ldr	r1, [r4, #52]
 	str	r0, [r4, #24]
 	str	r1, [r4, #28]
 	ldr	r0, [r4, #72]
 	ldr	r1, [r4, #76]
-	str	r0, [r6, #32]
-	str	r1, [r6, #36]
+	str	r0, [r5, #32]
+	str	r1, [r5, #36]
 	ldr	r0, [r4, #68]
-	ldr	r1, [r5, #64]!
+	ldr	r1, [r6, #64]!
 	str	r1, [r4, #32]
 	str	r0, [r4, #36]
 	ldr	r0, [r4, #88]
 	ldr	r1, [r4, #92]
-	str	r0, [r6, #40]
-	str	r1, [r6, #44]
+	str	r0, [r5, #40]
+	str	r1, [r5, #44]
 	ldr	r0, [r4, #80]
 	ldr	r1, [r4, #84]
 	str	r0, [r4, #40]
 	str	r1, [r4, #44]
 	ldr	r0, [r4, #104]
 	ldr	r1, [r4, #108]
-	str	r0, [r6, #48]
-	str	r1, [r6, #52]
+	str	r0, [r5, #48]
+	str	r1, [r5, #52]
 	ldr	r0, [r4, #96]
 	ldr	r1, [r4, #100]
 	str	r0, [r4, #48]
 	str	r1, [r4, #52]
 	ldr	r0, [r4, #120]
 	ldr	r1, [r4, #124]
-	str	r0, [r6, #56]
-	str	r1, [r6, #60]
+	str	r0, [r5, #56]
+	str	r1, [r5, #60]
 	ldr	r0, [r4, #112]
 	ldr	r1, [r4, #116]
 	str	r0, [r4, #56]
 	str	r1, [r4, #60]
-	ldr	r0, [r6]
-	ldr	r1, [r6, #4]
-	str	r0, [r5]
+	ldr	r0, [r5]
+	ldr	r1, [r5, #4]
+	str	r0, [r6]
 	str	r1, [r4, #68]
-	ldr	r0, [r6, #8]
-	ldr	r1, [r6, #12]
+	ldr	r0, [r5, #8]
+	ldr	r1, [r5, #12]
 	str	r0, [r4, #72]
 	str	r1, [r4, #76]
-	ldr	r0, [r6, #16]
-	ldr	r1, [r6, #20]
+	ldr	r0, [r5, #16]
+	ldr	r1, [r5, #20]
 	str	r0, [r4, #80]
 	str	r1, [r4, #84]
-	ldr	r0, [r6, #24]
-	ldr	r1, [r6, #28]
+	ldr	r0, [r5, #24]
+	ldr	r1, [r5, #28]
 	str	r0, [r4, #88]
 	str	r1, [r4, #92]
-	ldr	r0, [r6, #32]
-	ldr	r1, [r6, #36]
+	ldr	r0, [r5, #32]
+	ldr	r1, [r5, #36]
 	str	r0, [r4, #96]
 	str	r1, [r4, #100]
-	ldr	r0, [r6, #40]
-	ldr	r1, [r6, #44]
+	ldr	r0, [r5, #40]
+	ldr	r1, [r5, #44]
 	str	r0, [r4, #104]
 	str	r1, [r4, #108]
-	ldr	r0, [r6, #48]
-	ldr	r1, [r6, #52]
+	ldr	r0, [r5, #48]
+	ldr	r1, [r5, #52]
 	str	r0, [r4, #112]
 	str	r1, [r4, #116]
-	ldr	r0, [r6, #56]
-	ldr	r1, [r6, #60]
+	ldr	r0, [r5, #56]
+	ldr	r1, [r5, #60]
 	str	r0, [r4, #120]
 	str	r1, [r4, #124]
 	mov	r0, r4
-	mov	r1, r6
+	mov	r1, r5
 	bl	FFTC_float_8
-	mov	r0, r5
-	mov	r1, r6
+	mov	r0, r6
+	mov	r1, r5
 	bl	FFTC_float_8
-	ldr.w	r12, .LCPI4_0
-	movs	r0, #0
+	ldr	r1, .LCPI4_0
+	movs	r0, #4
 .LPC4_0:
-	add	r12, pc
+	add	r1, pc
 .LBB4_1:                                @ %loop.body8
                                         @ =>This Inner Loop Header: Depth=1
-	add.w	r3, r12, r0, lsl #3
-	ldr.w	r2, [r5, r0, lsl #3]
-	ldr.w	r1, [r4, r0, lsl #3]
-	vldr	s0, [r3]
-	vldr	s2, [r3, #4]
-	add.w	r3, r5, r0, lsl #3
-	ldr	r6, [r3, #4]
-	vmov	s4, r2
-	add.w	r2, r4, r0, lsl #3
-	vmov	s10, r1
+	adds	r2, r4, r0
+	adds	r5, r1, r0
+	ldr	r6, [r2, #60]
+	ldr	r3, [r2, #64]
+	vldr	s0, [r5, #-4]
+	vldr	s2, [r5]
+	vmov	s4, r6
+	ldr	r6, [r2, #-4]
+	vmov	s6, r3
+	ldr	r3, [r4, r0]
 	vmul.f32	s8, s0, s4
-	vmov	s6, r6
-	ldr	r6, [r2, #4]
 	vmul.f32	s0, s0, s6
 	vmls.f32	s8, s2, s6
 	vmla.f32	s0, s2, s4
-	vmov	s12, r6
+	vmov	s10, r6
+	vmov	s12, r3
 	vadd.f32	s6, s10, s8
-	vmov	r1, s6
 	vadd.f32	s2, s12, s0
 	vsub.f32	s0, s12, s0
-	str.w	r1, [r4, r0, lsl #3]
-	vmov	r1, s2
+	vmov	r3, s6
+	str	r3, [r2, #-4]
+	vmov	r3, s2
 	vsub.f32	s2, s10, s8
-	str	r1, [r2, #4]
-	vmov	r1, s2
-	str.w	r1, [r5, r0, lsl #3]
-	adds	r0, #1
-	vmov	r1, s0
-	str	r1, [r3, #4]
-	cmp	r0, #8
-	blt	.LBB4_1
+	str	r3, [r4, r0]
+	vmov	r3, s2
+	adds	r0, #8
+	str	r3, [r2, #60]
+	vmov	r3, s0
+	cmp	r0, #68
+	str	r3, [r2, #64]
+	bne	.LBB4_1
 @ BB#2:                                 @ %loop.after10
 	pop	{r4, r5, r6, pc}
 	.p2align	2

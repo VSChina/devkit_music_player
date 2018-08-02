@@ -2,6 +2,8 @@
 // ELL header for module model
 //
 
+#pragma once
+
 #include <stdint.h>
 
 #if defined(__cplusplus)
